@@ -1,0 +1,23 @@
+;; Define a variable to store the latest reminder message
+(defpoll last_reminder :interval "1s"
+  :initial "No reminders yet"
+  "cat $HOME/.config/eww/last_reminder.txt 2>/dev/null || echo 'No reminders yet'")
+
+;; Widget to display the reminder on your panel
+(defwidget reminder-display []
+  (box :orientation "horizontal"
+       :halign "center"
+       :class "reminder-box"
+       (label :text last_reminder)))
+
+;; Define the window that holds the reminder display
+(defwindow reminder-panel
+  :monitor 0
+  :geometry (geometry :x "3%" :y "80%" :width "300px" :height "150px" :anchor "bottom right")
+  :stacking "overlay"
+  :windowtype "dock"
+  :exclusive false  ;; This ensures it overlays instead of pushing content
+  :visible false  ;; <- This prevents it from being open by default
+  :focusable false  ;; <- Ensures it doesn’t take unnecessary focus
+    (box :class "reminder-container"
+       (reminder-display)))

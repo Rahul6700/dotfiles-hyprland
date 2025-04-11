@@ -1,0 +1,22 @@
+// Panel container
+.reminder-container {
+  background-color: rgba(30, 30, 46, 0.9); // AstroNvim-like dark theme
+  border-radius: 10px;
+  padding: 2px; // Makes the inner box 2px smaller than the panel
+  border: 2px solid #89b4fa;
+}
+
+// Reminder box (inside the panel)
+.reminder-box {
+  background-color: rgba(30, 30, 46, 0.9);
+  color: #cdd6f4;
+  font-family: "JetBrains Mono", monospace;
+  font-weight: bold;
+  font-size: 15px;
+  padding: 30px;
+  border: 1px solid rgb(30,70,70,0.5);
+  margin: 20px; // 2px smaller on each side
+  border-radius: 6px;
+}
+
+
