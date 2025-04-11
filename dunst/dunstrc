@@ -1,0 +1,36 @@
+[global]
+font = JetBrainsMono Nerd Font 10
+format = "<b>%s</b>\n%b"
+alignment = center
+vertical_alignment = bottom
+offset = (685, 800)
+width = 350
+padding = 20
+horizontal_padding = 20
+frame_width = 3
+frame_color = "#89b4fa"
+separator_height = 2
+transparency = 10  # Reduce if you want a more solid black
+corner_radius = 15
+icon_theme = Papirus
+monitor = 0
+follow = mouse
+mouse_left_click = do_action, close_current
+mouse_middle_click = close_all
+mouse_right_click = context
+
+[urgency_low]
+background = "#000000D0"   # Dark black with transparency
+foreground = "#ffffff"
+frame_color = "#555555"
+
+[urgency_normal]
+background = "#000000D0"
+foreground = "#ffffff"
+frame_color = "#89b4fa"
+
+[urgency_critical]
+background = "#000000D0"
+foreground = "#ff5555"
+frame_color = "#ff5555"
+
