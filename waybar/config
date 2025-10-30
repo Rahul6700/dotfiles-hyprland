@@ -1,115 +1,154 @@
 {
-  "margin-top" : 5,
-    "margin-left": 10,
-    "margin-right": 10,
-    "height" : 30,
-    "modules-left": [
-      "hyprland/window"
-    ],
-    "modules-center": [
-      "hyprland/workspaces",
-    ],
-    "modules-right": [
-    "pulseaudio",
+  "margin-top": 5,
+  "margin-left": 10,
+  "margin-right": 10,
+  "height": 30,
+
+  "modules-left": [
+    "custom/media",
+    "custom/window-usage",
+    "custom/cpu-temp",
+    "pulseaudio"
+  ],
+
+  "modules-center": [
+    "hyprland/workspaces"
+  ],
+
+  "modules-right": [
     "network",
-    "temperature",
     "battery",
     "clock",
     "tray"
-    ],
-    "hyprland/window": {
-      "format": "{}",
-      "max-length": 35,
-      "rewrite": {
-        "": "Empty Workspace"
-      },
-      "separate-outputs": true,
-    },
-    "hyprland/workspaces": {
-      "format": "{icon}",
-      "on-click": "activate",
-      "format-icons": {
-        "active": "",
-      },
-      "sort-by-number": true,
-      "persistent-workspaces": {
-        "*": 1, // 1 workspaces by default on every monitor
-        "HDMI-A-1": 3 // but only three on HDMI-A-1
-      },
-    },
-"clock": {
-  "tooltip-format": "<big>{:%Y %B %I:%M %p}</big>\n<tt><small>{calendar}</small></tt>",  // 12-hour format with AM/PM
-  "format" : "{:%I:%M %p | %d-%m-%Y}",
-},
-    "cpu": {
-      "format": "  {usage}%",
-      "tooltip": false
-    },
-    "memory": {
-      "format": "{}%  "
-    },
-    "temperature": {
-      "critical-threshold": 80,
-      "format": "{icon} {temperatureC}°C",
-      "format-icons": ["", "", ""]
-    },
-"battery": {
-  "states": {
-    "warning": 20,
-    "critical": 15
-  },
-  "format": "{icon} {capacity}%",
-  "format-full": "{icon} {capacity}%",
-  "format-charging": "󰂄 {capacity}%",
-  "format-plugged": "🔌{capacity}%",
-  "format-alt": "{time} {icon}",
-  "format-icons": [
-    "󰂃",    // 0% to 9%: low battery icon
-    "󰁺",   // 10% to 19%: slightly low battery
-    "󰁻",   // 20% to 29%: moderate battery
-    "󰁼",   // 30% to 39%: decent battery
-    "󰁽",   // 40% to 49%: good battery
-    "󰁾",   // 50% to 59%: more than half charged
-    "󰁿",   // 60% to 69%: nearly full
-    "󰂀",   // 70% to 79%: full battery
-    "󰂁",   // 80% to 89%: very full battery
-    "󰂂"   // 90% to 100%: fully charged (green circle)
   ],
-  "custom-icons": {
-    "0-9": "󰂃",    // 0% to 9%: low battery icon
-    "10-19": "󰁺",   // 10% to 19%: slightly low battery
-    "20-29": "󰁻",   // 20% to 29%: moderate battery
-    "30-39": "󰁼",   // 30% to 39%: decent battery
-    "40-49": "󰁽",   // 40% to 49%: good battery
-    "50-59": "󰁾",   // 50% to 59%: more than half charged
-    "60-69": "󰁿",   // 60% to 69%: nearly full
-    "70-79": "󰂀",   // 70% to 79%: full battery
-    "80-89": "󰂁",   // 80% to 89%: very full battery
-    "90-100": "󰂂"   // 90% to 100%: fully charged (green circle)
-  }
+
+  "custom/window-usage": {
+    "format": " {}",
+    "exec": "~/.config/waybar/scripts/window_usage.sh",
+    "interval": 2,
+    "return-type": "plain-text",
+    "on-click": "kill -9 $(hyprctl activewindow -j | jq .pid)",
+    "tooltip": true,
+    "tooltip-format": "Click to kill process"
+  },
+
+  "custom/media": {
+  "format": " {} |",
+  "exec": "~/.config/waybar/scripts/now_playing.sh",
+  "interval": 2,
+  "return-type": "plain-text",
+  "on-click": "playerctl play-pause",
+  "on-scroll-up": "playerctl next",
+  "on-scroll-down": "playerctl previous",
+  "tooltip": true,
+  "tooltip-format": "Click to Play/Pause\nScroll to Next/Previous"
 },
-    "network": {
-      "format-wifi": "  {essid} [{signalStrength}%]",
-      "format-ethernet": "{cidr} ",
-      "tooltip-format": "{ifname} via {gwaddr} ",
-      "format-linked": "{ifname} (No IP) ",
-      "format-disconnected": " ⚠ ",
-      "format-alt": "{ifname}: {ipaddr}/{cidr}"
+
+"custom/cpu-temp": {
+  "exec": "sensors | awk '/Package id 0:/ {print $4}'",
+  "interval": 5,
+  "format": " |  {}",
+  "return-type": "plain-text",
+  "tooltip": true,
+  "tooltip-format": "CPU Package Temp"
+},
+
+  "hyprland/window": {
+    "format": "{}",
+    "max-length": 35,
+    "rewrite": {
+      "": "Empty Workspace"
     },
-    "pulseaudio": {
-      "format": "{icon}  {volume}%",
-      "format-bluetooth": "{volume}% {icon} {format_source}",
-      "format-bluetooth-muted": " {icon} {format_source}",
-      "format-muted": "",
-      "format-icons": {
-        "headphone": "",
-        "hands-free": "",
-        "headset": "",
-        "phone": "",
-        "portable": "",
-        "car": "",
-        "default": ["", "", ""]
-      },
-      "on-click": "pavucontrol"
+    "separate-outputs": true
+  },
+
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "format-icons": {
+      "active": ""
+    },
+    "sort-by-number": true,
+    "persistent-workspaces": {
+      "*": 1,
+      "HDMI-A-1": 3
     }
+  },
+
+  "clock": {
+    "tooltip-format": "<big>{:%Y %B %I:%M %p}</big>\n<tt><small>{calendar}</small></tt>",
+    "format": "{:%I:%M %p | %d-%m-%Y}"
+  },
+
+  "cpu": {
+    "format": "  {usage}%",
+    "tooltip": false
+  },
+
+  "memory": {
+    "format": "{}%  "
+  },
+
+  "battery": {
+    "states": {
+      "warning": 20,
+      "critical": 15
+    },
+    "format": "{icon} {capacity}%",
+    "format-full": "{icon} {capacity}%",
+    "format-charging": "󰂄 {capacity}%",
+    "format-plugged": "🔌{capacity}%",
+    "format-alt": "{time} {icon}",
+    "format-icons": [
+      "󰂃",
+      "󰁺",
+      "󰁻",
+      "󰁼",
+      "󰁽",
+      "󰁾",
+      "󰁿",
+      "󰂀",
+      "󰂁",
+      "󰂂"
+    ],
+    "custom-icons": {
+      "0-9": "󰂃",
+      "10-19": "󰁺",
+      "20-29": "󰁻",
+      "30-39": "󰁼",
+      "40-49": "󰁽",
+      "50-59": "󰁾",
+      "60-69": "󰁿",
+      "70-79": "󰂀",
+      "80-89": "󰂁",
+      "90-100": "󰂂"
+    }
+  },
+
+  "network": {
+    "format-wifi": "  {essid} [{signalStrength}%]",
+    "format-ethernet": "{cidr} ",
+    "tooltip-format": "{ifname} via {gwaddr} ",
+    "format-linked": "{ifname} (No IP) ",
+    "format-disconnected": " ⚠ ",
+    "format-alt": "{ifname}: {ipaddr}/{cidr}"
+  },
+
+  "pulseaudio": {
+    "format": "| {icon} {volume}%",
+    "format-bluetooth": "{volume}% {icon} {format_source}",
+    "format-bluetooth-muted": " {icon} {format_source}",
+    "format-muted": "",
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
+    },
+    "on-click": "pavucontrol"
+  }
 }
+
